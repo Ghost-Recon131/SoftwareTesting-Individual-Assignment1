@@ -82,7 +82,65 @@ class CustomerAccountTestSuperTransactionsS3843790 {
 	// These are nested test cases that evaluate how the program performs when edge cases are introduced
 	@Nested
 	class NestedTestsForCustomerAccountWithEdgeCases{
-		//TODO
+		@Test
+		@DisplayName("6. Available Balance is updated where there not enough money to cover a debit")
+		void Debit_AvailableBalanceUpdated_InSufficientFundsToCoverDebit() throws Exception {
+			SetUpCustomerAccountTestData();
+			TestAccount.debit(1200);
+
+			assertEquals(-400, TestAccount.getAvailableBalance(), "Expect -400 after account is overdrawn");
+		}
+
+		@Test
+		@DisplayName("7. Total Balance is updated where there not enough money to cover a debit")
+		void Debit_TotalBalanceUpdated_InSufficientFundsToCoverDebit() throws Exception {
+			SetUpCustomerAccountTestData();
+			TestAccount.debit(1200);
+
+			assertEquals(-200, TestAccount.getTotalBalance(), "Expect -200 after account is overdrawn");
+		}
+
+		@Test
+		@DisplayName("8. Available Balance is updated when money is credited to overdrawn account")
+		void Debit_AvailableBalanceUpdated_AccountIsOverdrawn() throws Exception {
+			SetUpCustomerAccountTestData();
+			TestAccount.debit(1200);
+			TestAccount.credit(300);
+
+			assertEquals(100, TestAccount.getAvailableBalance(), "Expect 100 after transaction");
+		}
+
+		@Test
+		@DisplayName("9. Total Balance is updated when money is credited to overdrawn account")
+		void Debit_TotalBalanceUpdated_AccountIsOverdrawn() throws Exception {
+			SetUpCustomerAccountTestData();
+			TestAccount.debit(1200);
+			TestAccount.credit(300);
+
+			assertEquals(100, TestAccount.getTotalBalance(), "Expect 100 after transaction");
+		}
+
+		@Test
+		@DisplayName("10. Available Balance is updated when money is credited to overdrawn account")
+		void Credit_AvailableBalanceUpdated_AccountIsStillOverdrawn() throws Exception {
+			SetUpCustomerAccountTestData();
+			TestAccount.debit(1400);
+			TestAccount.credit(300);
+
+			assertEquals(-300, TestAccount.getAvailableBalance(), "Expect -300 after transaction");
+		}
+
+		@Test
+		@DisplayName("11. Total Balance is updated when money is credited to overdrawn account")
+		void Credit_TotalBalanceUpdated_AccountIsStillOverdrawn() throws Exception {
+			SetUpCustomerAccountTestData();
+			TestAccount.debit(1400);
+			TestAccount.credit(300);
+
+			assertEquals(-100, TestAccount.getTotalBalance(), "Expect -100 after transaction");
+		}
+
+
 	}
 
 }
