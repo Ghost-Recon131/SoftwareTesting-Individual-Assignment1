@@ -18,7 +18,7 @@ import java.util.ArrayList;
 /*
  * Please replace S3214321 of class name with your own student number
  */
-class BankDatabaseNewTestConstructorsS3214321 {
+class BankDatabaseNewTestConstructorsS3843790 {
 	private BankDatabaseNew BankDatabaseTest; //class variable used for testing BankDatabaseNew
 	private CustomerAccount TestCustomerAccount;
 	private CustomerAccount TestCustomerAccount2;
