@@ -6,6 +6,7 @@
 * 
 * [OPTIONAL: add any notes here about the code]
 */
+
 package au.edu.rmit.ct;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +21,7 @@ import org.junit.jupiter.api.Test;
  * Please replace S3214321 of class name with your own student number
  */
 
-class BankDatabaseNewTestSortingS3214321 {
+class DepositSlotTimedTestAdvancedTimingS3843790 {
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {

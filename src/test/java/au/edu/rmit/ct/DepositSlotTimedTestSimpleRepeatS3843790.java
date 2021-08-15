@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
  * Please replace S3214321 of class name with your own student number
  */
 
-class DepositSlotTimedTestSimpleRepeatS3214321 {
+class DepositSlotTimedTestSimpleRepeatS3843790 {
 
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
