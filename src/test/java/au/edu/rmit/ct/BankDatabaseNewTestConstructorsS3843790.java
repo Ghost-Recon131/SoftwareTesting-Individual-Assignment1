@@ -50,9 +50,9 @@ class BankDatabaseNewTestConstructorsS3214321 {
 		assertTrue(BankDatabaseTest.isEmpty(), "Expect true");
 	}
 
+	//tests that the default constructor is working
 	@Test
 	@DisplayName("2. Test CustomerAccountConstructor")
-		//tests that the default constructor is working
 	void CustomerAccount_SuccessfullyCreated_CreateCustomerObject() throws Exception {
 		SetUpCustomerAccountTestData();
 		assertEquals("John", TestCustomerAccount.getGivenName(), "Expect true");
@@ -100,7 +100,7 @@ class BankDatabaseNewTestConstructorsS3214321 {
 		);
 	}
 
-	@Test //cannot use assertThrows on creating an object via constructor, thus using try / catch block instead
+	@Test
 	@DisplayName("6. CustomerAccount constructor throws an exception on short pin")
 	void CustomerAccount_ThrowsException_PinTooShort() {
 		assertThrows(
