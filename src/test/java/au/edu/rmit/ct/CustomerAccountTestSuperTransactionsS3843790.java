@@ -20,7 +20,7 @@ class CustomerAccountTestSuperTransactionsS3843790 {
 	CustomerAccount TestAccount;
 
 	void SetUpCustomerAccountTestData() throws Exception {
-		TestAccount = new CustomerAccount(1001, 2512, 800, 1000, "Kazuma", "Satou", 920178);
+		TestAccount = new CustomerAccount(1001, 2512, 800, 1000, "Satou", "Kazuma", 920178);
 	}
 
 	@AfterEach
@@ -80,6 +80,12 @@ class CustomerAccountTestSuperTransactionsS3843790 {
 	}
 
 	// These are nested test cases that evaluate how the program performs when edge cases are introduced
+	//Assumptions Made:
+	/**
+	 * The Bank will honour a transaction even if it overdraws an account
+	 * When the account is overdrawn, no further debits can take place
+	 * For this case, assuming banks will not charge a dishonour fee for overdrawing the account
+	 */
 	@Nested
 	class NestedTestsForCustomerAccountWithEdgeCases{
 		@Test
@@ -140,6 +146,14 @@ class CustomerAccountTestSuperTransactionsS3843790 {
 			assertEquals(-100, TestAccount.getTotalBalance(), "Expect -100 after transaction");
 		}
 
+		@Test
+		@DisplayName("12. Throws exception when trying to debit from overdrawn account")
+		void Credit_ThrowsException_DebitAnOverdrawnAccount() throws Exception {
+			SetUpCustomerAccountTestData();
+			TestAccount.debit(1400);
+
+			assertThrows(Exception.class, () -> TestAccount.debit(500), "Expect exception thrown" );
+		}
 
 	}
 
