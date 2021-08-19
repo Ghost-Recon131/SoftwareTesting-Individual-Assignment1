@@ -71,7 +71,7 @@ class BankDatabaseNewTestConstructorsS3843790 {
 		AccountArraylist.add(TestCustomerAccount2);
 
 		BankDatabaseNew BankDatabaseConstructorTest = new BankDatabaseNew(AccountArraylist); //add to constructor
-		assertEquals(2, BankDatabaseConstructorTest.size(), "Expect 1");
+		assertEquals(2, BankDatabaseConstructorTest.size(), "Expect 2");
  	}
 
  	@Test
@@ -114,6 +114,19 @@ class BankDatabaseNewTestConstructorsS3843790 {
 		assertThrows(
 				Exception.class, () -> new CustomerAccount(1010, 56789, 2000, 2000, "Tachibana", "Kanade", 244650)
 		);
+	}
+
+	@Test
+	@DisplayName("8. Test adding account of same name and pin but different AccountID")
+	void add_AddsCustomerAccount_SameNameAndPinAsExistingAccounts() throws Exception {
+		SetUpBankDatabaseTestData();
+		SetUpCustomerAccountTestData();
+		BankDatabaseTest.add(TestCustomerAccount);
+		BankDatabaseTest.add(TestCustomerAccount2);
+		CustomerAccount TestCustomerAccount3 = new CustomerAccount(101101, 7890, 1000, 12000, "Bosak", "Ela", 38590);
+		BankDatabaseTest.add(TestCustomerAccount3);
+
+		assertEquals(3, BankDatabaseTest.size(), "Expect 3");
 	}
 
 }
