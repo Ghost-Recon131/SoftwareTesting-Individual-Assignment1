@@ -22,26 +22,30 @@ import org.junit.jupiter.api.Test;
  */
 
 class DepositSlotTimedTestAdvancedTimingS3843790 {
+	//Test naming convention used: MethodName_ExpectedBehavior_StateUnderTest
+	@Test
+	void run_ReturnsFalse_BeforeDepositSlotActivationPeriod() throws Exception {
+		DepositSlotTimed TestDepositSlotTimed = new DepositSlotTimed("TestDepositSlot", 10);
 
-	@BeforeAll
-	static void setUpBeforeClass() throws Exception {
-	}
-
-	@AfterAll
-	static void tearDownAfterClass() throws Exception {
-	}
-
-	@BeforeEach
-	void setUp() throws Exception {
-	}
-
-	@AfterEach
-	void tearDown() throws Exception {
+		assertFalse(TestDepositSlotTimed.isOpenForDeposit(), "Expect false after period of activation");
 	}
 
 	@Test
-	void test() {
-		fail("Not yet implemented");
+	void run_ReturnsFalse_AfterDepositSlotActivationPeriod() throws Exception {
+		DepositSlotTimed TestDepositSlotTimed = new DepositSlotTimed("TestDepositSlot", 10);
+		TestDepositSlotTimed.run();
+
+		assertFalse(TestDepositSlotTimed.isOpenForDeposit(), "Expect false after period of activation");
+	}
+
+	@Test
+	void run_ReturnsTrue_DuringDepositSlotActivationPeriod() throws Exception {
+		DepositSlotTimed TestDepositSlotTimed = new DepositSlotTimed("TestDepositSlot", 10);
+
+		new Thread(() -> {
+			TestDepositSlotTimed.run();
+			assertTrue(TestDepositSlotTimed.isOpenForDeposit(), "Expect true");
+		});
 	}
 
 }
