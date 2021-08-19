@@ -52,12 +52,12 @@ class CustomerAccountTestSuperTransactionsS3843790 {
 		}
 
 		@Test
-		@DisplayName("3. Available Balance is updated when money is credited to account")
+		@DisplayName("3. Available Balance is unchanged when money is credited to account")
 		void Credit_AvailableBalanceUpdated_MoneyIsCreditedToAccount() throws Exception {
 			SetUpCustomerAccountTestData();
 			TestAccount.credit(500.15);
 
-			assertEquals(1300.15, TestAccount.getAvailableBalance(), "Expect 1300.15 after transaction");
+			assertEquals(800, TestAccount.getAvailableBalance(), "Expect 800 after transaction");
 		}
 
 		@Test
@@ -107,13 +107,13 @@ class CustomerAccountTestSuperTransactionsS3843790 {
 		}
 
 		@Test
-		@DisplayName("8. Available Balance is updated when money is credited to overdrawn account")
+		@DisplayName("8. Available Balance is unchanged when money is credited to overdrawn account")
 		void Debit_AvailableBalanceUpdated_AccountIsOverdrawn() throws Exception {
 			SetUpCustomerAccountTestData();
 			TestAccount.debit(1200);
 			TestAccount.credit(300);
 
-			assertEquals(100, TestAccount.getAvailableBalance(), "Expect 100 after transaction");
+			assertEquals(-400, TestAccount.getAvailableBalance(), "Expect -400 after transaction");
 		}
 
 		@Test
@@ -127,13 +127,13 @@ class CustomerAccountTestSuperTransactionsS3843790 {
 		}
 
 		@Test
-		@DisplayName("10. Available Balance is updated when money is credited to overdrawn account")
+		@DisplayName("10. Available Balance is unchanged when money is credited to overdrawn account")
 		void Credit_AvailableBalanceUpdated_AccountIsStillOverdrawn() throws Exception {
 			SetUpCustomerAccountTestData();
 			TestAccount.debit(1400);
 			TestAccount.credit(300);
 
-			assertEquals(-300, TestAccount.getAvailableBalance(), "Expect -300 after transaction");
+			assertEquals(-600, TestAccount.getAvailableBalance(), "Expect -600 after transaction");
 		}
 
 		@Test
