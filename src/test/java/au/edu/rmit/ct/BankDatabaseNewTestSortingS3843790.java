@@ -59,7 +59,7 @@ class BankDatabaseNewTestSortingS3843790 {
 		TestAccount15 = new CustomerAccount(10000, 7917, 6500, 13000, "Tachibana", "Mitsuha", 728824); // Same family name as TestAccount3
 		TestAccount16 = new CustomerAccount(10001, 4557, 5500, 11000, "Tokisaki", "Shido", 151915);; // Same Balance, BSB and family name as TestAccount 8
 		TestAccount17 = new CustomerAccount(10010, 1772, 3500, 7000, "Tempest", "Rimuru", 335368); // Same Balance as TestAccount5
-		TestAccount18 = new CustomerAccount(10100, 9176, 7000, 14000, "Bloodfallen", "Shalltear", 974680); // Same BSB as TestAccount 12
+		TestAccount18 = new CustomerAccount(10100, 9176, 7000, 14000, "Bloodfallen", "Shalltear", 706129); // Same BSB as TestAccount9
 	}
 
 	@AfterEach
@@ -86,6 +86,7 @@ class BankDatabaseNewTestSortingS3843790 {
 
 	//Test naming convention used: MethodName_ExpectedBehavior_StateUnderTest
 	@Test
+	@Order(1)
 	@DisplayName("1. Matching manually sorted Arraylist to arraylist sorted by sortByTotalBalance")
 	void sortByTotalBalance_CorrectlySorts_RunOnValidAccounts() throws Exception {
 		BankDatabaseNew BankDatabaseTest = new BankDatabaseNew();
@@ -123,6 +124,7 @@ class BankDatabaseNewTestSortingS3843790 {
 	}
 
 	@Test
+	@Order(2)
 	@DisplayName("2. Matching manually sorted Arraylist to arraylist sorted by sortByBSB")
 	void sortByBSB_CorrectlySorts_RunOnValidAccounts() throws Exception {
 		BankDatabaseNew BankDatabaseTest = new BankDatabaseNew();
@@ -159,6 +161,7 @@ class BankDatabaseNewTestSortingS3843790 {
 	}
 
 	@Test
+	@Order(3)
 	@DisplayName("3. Matching manually sorted Arraylist to arraylist sorted by sortName")
 	void sortName_CorrectlySorts_RunOnValidAccounts() throws Exception {
 		BankDatabaseNew BankDatabaseTest = new BankDatabaseNew();
@@ -196,8 +199,9 @@ class BankDatabaseNewTestSortingS3843790 {
 
 	// Repeating to ensure the behaviour of being ordered after the 'original' remains consistent
 	@RepeatedTest(3)
+	@Order(4)
 	@DisplayName("4. Matching manually sorted Arraylist to arraylist sorted by sortByTotalBalance with dataset 2")
-	void sortByTotalBalance_CorrectlySorts_SomeAccountsWithBalance() throws Exception {
+	void sortByTotalBalance_OrderedAccordingToWhenAccountsAreAdded_SomeAccountsWithSameBalance() throws Exception {
 		BankDatabaseNew BankDatabaseTest = new BankDatabaseNew();
 		SetUpTestDataSet1();
 		SetUpTestDataSet2();
@@ -236,7 +240,105 @@ class BankDatabaseNewTestSortingS3843790 {
 		ManuallySortedByTotalBalance.add(TestAccount16); // same as 8
 		ManuallySortedByTotalBalance.add(TestAccount2);
 
-		assertEquals(ManuallySortedByTotalBalance, BankDatabaseTest.export(), "Expect equals, accounts with same details will come after the 'original' since they are added later");
+		assertEquals(ManuallySortedByTotalBalance, BankDatabaseTest.export(), "Expect equals, accounts with same balanced will be sorted in order they are added");
 	}
+
+	// Repeating to ensure the behaviour of being ordered after the 'original' remains consistent
+	@RepeatedTest(3)
+	@Order(5)
+	@DisplayName("5. Matching manually sorted Arraylist to arraylist sorted by sortByBSB with dataset 2")
+	void sortByBSB_OrderedAccordingToWhenAccountsAreAdded_SomeAccountsWithSameBSB() throws Exception {
+		BankDatabaseNew BankDatabaseTest = new BankDatabaseNew();
+		SetUpTestDataSet1();
+		SetUpTestDataSet2();
+		BankDatabaseTest.add(TestAccount16); // Same as 8
+		BankDatabaseTest.add(TestAccount18); // Same as 9
+		BankDatabaseTest.add(TestAccount1);
+		BankDatabaseTest.add(TestAccount2);
+		BankDatabaseTest.add(TestAccount3);
+		BankDatabaseTest.add(TestAccount4);
+		BankDatabaseTest.add(TestAccount5);
+		BankDatabaseTest.add(TestAccount6);
+		BankDatabaseTest.add(TestAccount7);
+		BankDatabaseTest.add(TestAccount8);
+		BankDatabaseTest.add(TestAccount9);
+		BankDatabaseTest.add(TestAccount10);
+		BankDatabaseTest.add(TestAccount11);
+		BankDatabaseTest.add(TestAccount12);
+		BankDatabaseTest.add(TestAccount14); // Same as 2
+		BankDatabaseTest.sortByBSB();
+
+		ArrayList<CustomerAccount> ManuallySortedByBSB = new ArrayList<>();
+		ManuallySortedByBSB.add(TestAccount12);
+		ManuallySortedByBSB.add(TestAccount16); // Same as 8
+		ManuallySortedByBSB.add(TestAccount8);
+		ManuallySortedByBSB.add(TestAccount1);
+		ManuallySortedByBSB.add(TestAccount10);
+		ManuallySortedByBSB.add(TestAccount7);
+		ManuallySortedByBSB.add(TestAccount5);
+		ManuallySortedByBSB.add(TestAccount11);
+		ManuallySortedByBSB.add(TestAccount3);
+		ManuallySortedByBSB.add(TestAccount18); // Same as 9
+		ManuallySortedByBSB.add(TestAccount9);
+		ManuallySortedByBSB.add(TestAccount2);
+		ManuallySortedByBSB.add(TestAccount14); // Same as 2
+		ManuallySortedByBSB.add(TestAccount4);
+		ManuallySortedByBSB.add(TestAccount6);
+
+		assertEquals(ManuallySortedByBSB, BankDatabaseTest.export(), "Expect equals, accounts with same BSB " +
+				"will be sorted by family name, then by order they are added");
+	}
+
+	// Repeating to ensure the behaviour of being ordered after the 'original' remains consistent
+	@RepeatedTest(3)
+	@Order(6)
+	@DisplayName("6. Matching manually sorted Arraylist to arraylist sorted by sortName with dataset 2")
+	void sortName_OrderedAccordingToWhenAccountsAreAdded_SomeAccountsWithName() throws Exception {
+		CustomerAccount TestAccount19 = new CustomerAccount(10101, 9457, 7500, 15000, "Ogiwara", "Issa", 487782);
+		// create 1 more account with same family name and first name, same name as TestAccount18
+
+		BankDatabaseNew BankDatabaseTest = new BankDatabaseNew();
+		SetUpTestDataSet1();
+		SetUpTestDataSet2();
+		BankDatabaseTest.add(TestAccount16); // same as 8
+		BankDatabaseTest.add(TestAccount1);
+		BankDatabaseTest.add(TestAccount14); // same as 2
+		BankDatabaseTest.add(TestAccount2);
+		BankDatabaseTest.add(TestAccount3);
+		BankDatabaseTest.add(TestAccount4);
+		BankDatabaseTest.add(TestAccount5);
+		BankDatabaseTest.add(TestAccount6);
+		BankDatabaseTest.add(TestAccount7);
+		BankDatabaseTest.add(TestAccount8);
+		BankDatabaseTest.add(TestAccount9);
+		BankDatabaseTest.add(TestAccount10);
+		BankDatabaseTest.add(TestAccount11);
+		BankDatabaseTest.add(TestAccount12);
+		BankDatabaseTest.add(TestAccount15); // same as 3
+		BankDatabaseTest.add(TestAccount19); // same as 14
+		BankDatabaseTest.sortByName();
+
+		ArrayList<CustomerAccount> ManuallySortedByName = new ArrayList<>();
+		ManuallySortedByName.add(TestAccount5);
+		ManuallySortedByName.add(TestAccount9);
+		ManuallySortedByName.add(TestAccount1);
+		ManuallySortedByName.add(TestAccount6);
+		ManuallySortedByName.add(TestAccount12);
+		ManuallySortedByName.add(TestAccount14); // same as 2
+		ManuallySortedByName.add(TestAccount19); // same as 14, comes after since it was added after TestAccount14
+		ManuallySortedByName.add(TestAccount2);
+		ManuallySortedByName.add(TestAccount4);
+		ManuallySortedByName.add(TestAccount11);
+		ManuallySortedByName.add(TestAccount10);
+		ManuallySortedByName.add(TestAccount15); // same as 3, will come before 3 regardless of add order because of First name
+		ManuallySortedByName.add(TestAccount3);
+		ManuallySortedByName.add(TestAccount8);
+		ManuallySortedByName.add(TestAccount16); // same as 8, after 8 regardless of add order because of First name
+		ManuallySortedByName.add(TestAccount7);
+
+		assertEquals(ManuallySortedByName, BankDatabaseTest.export(), "Expect equals, accounts with same Family "
+				+ "name will be sorted by given name, then by order they are added");
+	}
+
 
 }
