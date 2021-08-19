@@ -82,6 +82,9 @@ class CustomerAccountTestSuperTransactionsS3843790 {
 	// These are nested test cases that evaluate how the program performs when edge cases are introduced
 	//Assumptions Made:
 	/**
+	 * While the Withdrawal class does not permit overdrawing and account, most banks to allow it and these tests may
+	 * serve as a test for future feature implementations.
+	 *
 	 * The Bank will honour a transaction even if it overdraws an account
 	 * When the account is overdrawn, no further debits can take place
 	 * For this case, assuming banks will not charge a dishonour fee for overdrawing the account
